@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog"
 import {
   Store,
@@ -23,6 +24,7 @@ import {
   Truck,
   BarChart3,
   LogIn,
+  MessageCircle,
 } from "lucide-react"
 import {
   productosIniciales,
@@ -45,6 +47,8 @@ import { GestionPedidos } from "@/components/admin/gestion-pedidos"
 import { DashboardIngresos } from "@/components/dueno/dashboard-ingresos"
 import { Login } from "@/components/auth/login"
 
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden"
+
 type Vista = "cliente" | "admin" | "dueño"
 type SubVista = "catalogo" | "carrito" | "perfil" | "chatbot" | "stock" | "despacho" | "pedidos" | "dashboard"
 
@@ -63,7 +67,7 @@ export default function TiendaUrbano() {
   const [pedidos, setPedidos] = useState<Pedido[]>(pedidosIniciales)
 
   // Bloquear scroll cuando el login está abierto
-  useEffect(() => {
+  /*useEffect(() => {
     if (mostrarLogin) {
       document.body.style.overflow = "hidden"
     } else {
@@ -72,7 +76,7 @@ export default function TiendaUrbano() {
     return () => {
       document.body.style.overflow = "auto"
     }
-  }, [mostrarLogin])
+  }, [mostrarLogin])*/
 
   // Handlers de autenticación
   const handleLogin = (user: Usuario) => {
@@ -147,8 +151,12 @@ export default function TiendaUrbano() {
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-primary rounded-lg">
-                <Store className="w-6 h-6 text-primary-foreground" />
+              <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl border bg-background/80 p-1.5 shadow-sm sm:h-16 sm:w-16">
+                <img
+                  src="/LogoTU.png"
+                  alt="Logo de Tienda Urbano"
+                  className="h-full w-full object-contain"
+                />
               </div>
               <div>
                 <h1 className="font-bold text-lg">Tiendas Urbano</h1>
@@ -199,7 +207,7 @@ export default function TiendaUrbano() {
 
       {/* Modal de Login con Sistema de Registro */}
       {mostrarLogin && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 p-4">
           <Login 
             onLogin={handleLogin} 
             onSkip={() => setMostrarLogin(false)}
@@ -367,6 +375,26 @@ export default function TiendaUrbano() {
         )}
       </main>
 
+      {/* BOTON FLOTANTE DE CHATBOT */}
+        <div className="fixed bottom-6 right-6 z-[60]">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="rounded-full h-14 w-14 shadow-lg" size="icon">
+              <MessageCircle className="w-6 h-6" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="flex h-[80vh] max-h-[90vh] flex-col overflow-hidden rounded-2xl border bg-background p-0 shadow-2xl sm:max-w-[500px]">
+            {/* Lector de pantalla oculto */}
+            <VisuallyHidden.Root>
+              <DialogTitle>Chat de soporte Tienda Urbano</DialogTitle>
+            </VisuallyHidden.Root>
+            {/* Clase para asegurar que Chatbot llene el espacio */}
+          <div className="h-full flex-1 overflow-hidden">
+            <Chatbot pedidos={pedidos} />
+          </div>
+          </DialogContent>
+        </Dialog>
+      </div>
     </div>
   )
 }

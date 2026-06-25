@@ -164,9 +164,9 @@ export function Chatbot({ pedidos }: ChatbotProps) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-4xl">
-      <Tabs defaultValue="chat" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+    <div className="flex h-full flex-col overflow-hidden px-4 py-6">
+      <Tabs defaultValue="chat" className="flex h-full w-full flex-col">
+        <TabsList className="grid w-full flex-none grid-cols-3">
           <TabsTrigger value="chat" className="gap-2">
             <MessageCircle className="w-4 h-4" />
             Chat
@@ -182,18 +182,18 @@ export function Chatbot({ pedidos }: ChatbotProps) {
         </TabsList>
 
         {/* TAB: CHAT */}
-        <TabsContent value="chat" className="space-y-4">
-          <Card>
-            <CardHeader>
+        <TabsContent value="chat" className="mt-4 flex min-h-0 flex-1 flex-col overflow-hidden">
+          <Card className="flex h-full min-h-0 flex-col">
+            <CardHeader className="flex-none">
               <CardTitle>Soporte en Vivo</CardTitle>
               <CardDescription>
                 Realiza preguntas sobre nuestros productos y servicios
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="flex min-h-0 flex-1 flex-col overflow-hidden">
               {/* Ventana de conversación */}
-              <ScrollArea className="h-80 border rounded-lg p-4 bg-muted/30">
-                <div className="space-y-4">
+              <ScrollArea className="flex-1 min-h-0 w-full">
+                <div className="space-y-4 pr-4 pb-4">
                   {mensajes.map((msg) => (
                     <div
                       key={msg.id}
@@ -222,7 +222,7 @@ export function Chatbot({ pedidos }: ChatbotProps) {
               </ScrollArea>
 
               {/* Input de mensaje */}
-              <div className="flex gap-2">
+              <div className="flex gap-2 mt-4 flex-none">
                 <Input
                   placeholder="Escribe tu pregunta..."
                   value={input}
@@ -238,53 +238,53 @@ export function Chatbot({ pedidos }: ChatbotProps) {
         </TabsContent>
 
         {/* TAB: PREGUNTAS FRECUENTES */}
-        <TabsContent value="preguntas" className="space-y-4">
-          <Card>
-            <CardHeader>
+        <TabsContent value="preguntas" className="mt-4 flex min-h-0 flex-1 flex-col overflow-hidden">
+          <Card className="flex h-full min-h-0 flex-col">
+            <CardHeader className="flex-none">
               <CardTitle>Preguntas Frecuentes</CardTitle>
               <CardDescription>
                 Respuestas rápidas a tus dudas más comunes
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {preguntasFrecuentes.map((faq, idx) => (
-                  <div
-                    key={idx}
-                    className="p-4 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
-                    onClick={() => handlePreguntaFrecuente(faq.respuesta)}
-                  >
-                    <p className="font-medium text-sm mb-2">{faq.pregunta}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {faq.respuesta}
-                    </p>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="mt-2"
+            <CardContent className="flex min-h-0 flex-1 flex-col overflow-hidden">
+              <ScrollArea className="flex-1 min-h-0 w-full">
+                <div className="space-y-3 pr-4 pb-4">
+                  {preguntasFrecuentes.map((faq, idx) => (
+                    <div
+                      key={idx}
+                      className="cursor-pointer rounded-lg border p-4 transition-colors hover:bg-muted/50"
                       onClick={() => handlePreguntaFrecuente(faq.respuesta)}
                     >
-                      Ver en chat
-                    </Button>
-                  </div>
-                ))}
-              </div>
+                      <p className="mb-2 text-sm font-medium">{faq.pregunta}</p>
+                      <p className="text-sm text-muted-foreground">{faq.respuesta}</p>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="mt-2"
+                        onClick={() => handlePreguntaFrecuente(faq.respuesta)}
+                      >
+                        Ver en chat
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
             </CardContent>
           </Card>
         </TabsContent>
 
         {/* TAB: SEGUIMIENTO DE PEDIDOS */}
-        <TabsContent value="pedidos" className="space-y-4">
-          <Card>
-            <CardHeader>
+        <TabsContent value="pedidos" className="mt-4 flex min-h-0 flex-1 flex-col overflow-hidden">
+          <Card className="flex h-full min-h-0 flex-col">
+            <CardHeader className="flex-none">
               <CardTitle>Seguimiento de Pedidos</CardTitle>
               <CardDescription>
                 Busca tus pedidos por número o nombre
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="flex min-h-0 flex-1 flex-col overflow-hidden">
               {/* Buscador */}
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-none">
                 <Input
                   placeholder="Buscar por ID de pedido o nombre..."
                   value={busquedaPedido}
@@ -294,98 +294,100 @@ export function Chatbot({ pedidos }: ChatbotProps) {
                 <Button onClick={buscarPedido}>Buscar</Button>
               </div>
 
-              {/* Resultados */}
-              {pedidoEncontrado ? (
-                <Card className="border-primary bg-primary/5">
-                  <CardContent className="pt-6 space-y-3">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <p className="font-semibold">Pedido #{pedidoEncontrado.id}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {pedidoEncontrado.cliente}
+              <div className="mt-4 flex-1 min-h-0 overflow-hidden">
+                <ScrollArea className="h-full w-full">
+                  <div className="space-y-4 pr-4 pb-4">
+                    {/* Resultados */}
+                    {pedidoEncontrado ? (
+                      <Card className="border-primary bg-primary/5">
+                        <CardContent className="pt-6 space-y-3">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <p className="font-semibold">Pedido #{pedidoEncontrado.id}</p>
+                              <p className="text-sm text-muted-foreground">
+                                {pedidoEncontrado.cliente}
+                              </p>
+                            </div>
+                            <Badge
+                              variant={
+                                pedidoEncontrado.estado === "Entregado"
+                                  ? "default"
+                                  : pedidoEncontrado.estado === "En despacho"
+                                  ? "secondary"
+                                  : "outline"
+                              }
+                            >
+                              {pedidoEncontrado.estado}
+                            </Badge>
+                          </div>
+
+                          <div className="space-y-2 border-t pt-3">
+                            <div className="flex justify-between text-sm">
+                              <span className="text-muted-foreground">Fecha:</span>
+                              <span>{pedidoEncontrado.fecha}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-muted-foreground">Dirección:</span>
+                              <span>{pedidoEncontrado.direccion}</span>
+                            </div>
+                            <div className="flex justify-between text-sm font-semibold">
+                              <span>Total:</span>
+                              <span>${pedidoEncontrado.total.toLocaleString("es-CL")}</span>
+                            </div>
+                          </div>
+
+                          <div className="border-t pt-3">
+                            <p className="mb-2 text-sm font-medium">Productos:</p>
+                            <div className="space-y-1">
+                              {pedidoEncontrado.productos.map((item, idx) => (
+                                <p key={idx} className="text-sm text-muted-foreground">
+                                  • {item.producto.nombre} (Talla: {item.talla}) x
+                                  {item.cantidad}
+                                </p>
+                              ))}
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ) : busquedaPedido ? (
+                      <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-center">
+                        <p className="text-sm text-destructive">
+                          No se encontró ningún pedido con los criterios de búsqueda.
                         </p>
                       </div>
-                      <Badge
-                        variant={
-                          pedidoEncontrado.estado === "Entregado"
-                            ? "default"
-                            : pedidoEncontrado.estado === "En despacho"
-                            ? "secondary"
-                            : "outline"
-                        }
-                      >
-                        {pedidoEncontrado.estado}
-                      </Badge>
-                    </div>
+                    ) : (
+                      <div className="p-8 text-center text-muted-foreground">
+                        <Package className="mx-auto mb-3 h-12 w-12 opacity-50" />
+                        <p>Ingresa un número de pedido o nombre para buscar</p>
+                      </div>
+                    )}
 
-                    <div className="space-y-2 border-t pt-3">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Fecha:</span>
-                        <span>{pedidoEncontrado.fecha}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Dirección:</span>
-                        <span>{pedidoEncontrado.direccion}</span>
-                      </div>
-                      <div className="flex justify-between text-sm font-semibold">
-                        <span>Total:</span>
-                        <span>${pedidoEncontrado.total.toLocaleString("es-CL")}</span>
-                      </div>
-                    </div>
-
-                    <div className="border-t pt-3">
-                      <p className="font-medium text-sm mb-2">Productos:</p>
-                      <div className="space-y-1">
-                        {pedidoEncontrado.productos.map((item, idx) => (
-                          <p key={idx} className="text-sm text-muted-foreground">
-                            • {item.producto.nombre} (Talla: {item.talla}) x
-                            {item.cantidad}
-                          </p>
-                        ))}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ) : busquedaPedido ? (
-                <div className="p-4 border border-destructive/50 bg-destructive/10 rounded-lg text-center">
-                  <p className="text-sm text-destructive">
-                    No se encontró ningún pedido con los criterios de búsqueda.
-                  </p>
-                </div>
-              ) : (
-                <div className="p-8 text-center text-muted-foreground">
-                  <Package className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                  <p>Ingresa un número de pedido o nombre para buscar</p>
-                </div>
-              )}
-
-              {/* Listado de todos los pedidos */}
-              {!busquedaPedido && pedidos.length > 0 && (
-                <div className="space-y-2 mt-6 border-t pt-6">
-                  <p className="font-medium text-sm">Todos tus pedidos:</p>
-                  <div className="space-y-2">
-                    {pedidos.map((pedido) => (
-                      <div
-                        key={pedido.id}
-                        className="p-3 border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors"
-                        onClick={() => setBusquedaPedido(pedido.id.toString())}
-                      >
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <p className="font-medium text-sm">
-                              Pedido #{pedido.id}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              {pedido.fecha}
-                            </p>
-                          </div>
-                          <Badge variant="outline">{pedido.estado}</Badge>
+                    {/* Listado de todos los pedidos */}
+                    {!busquedaPedido && pedidos.length > 0 && (
+                      <div className="mt-6 space-y-2 border-t pt-6">
+                        <p className="text-sm font-medium">Todos tus pedidos:</p>
+                        <div className="space-y-2">
+                          {pedidos.map((pedido) => (
+                            <div
+                              key={pedido.id}
+                              className="cursor-pointer rounded-lg border p-3 transition-colors hover:bg-muted/50"
+                              onClick={() => setBusquedaPedido(pedido.id.toString())}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <p className="text-sm font-medium">Pedido #{pedido.id}</p>
+                                  <p className="text-xs text-muted-foreground">{pedido.fecha}</p>
+                                </div>
+                                <Badge variant="outline">{pedido.estado}</Badge>
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    ))}
+                    )}
                   </div>
-                </div>
-              )}
+                </ScrollArea>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
