@@ -25,7 +25,7 @@ export default function HomePage() {
             </h1>
           </div>
           <span className="inline-flex rounded-full bg-rose-300/95 px-10 py-4 text-lg font-semibold text-slate-950 shadow-lg shadow-rose-900/20 transition duration-300 ease-out group-hover:-translate-y-1 group-hover:shadow-2xl">
-            Entrar a Tiendas Urbano
+              Explorar colección
           </span>
         </Link>
       </div>
