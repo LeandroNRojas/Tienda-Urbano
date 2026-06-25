@@ -35,6 +35,12 @@ export interface Usuario {
   nombre: string
   password: string
   rol: "cliente" | "admin" | "dueño"
+  telefono?: string
+  region?: string
+  comuna?: string
+  direccion?: string
+  codigoPostal?: string
+  indicaciones?: string
 }
 
 export const productosIniciales: Producto[] = [

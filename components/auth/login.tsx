@@ -21,7 +21,14 @@ export function Login({ onLogin, onSkip }: LoginProps) {
   const [tab, setTab] = useState("login")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
   const [nombre, setNombre] = useState("")
+  const [telefono, setTelefono] = useState("")
+  const [region, setRegion] = useState("")
+  const [comuna, setComuna] = useState("")
+  const [direccion, setDireccion] = useState("")
+  const [codigoPostal, setCodigoPostal] = useState("")
+  const [indicaciones, setIndicaciones] = useState("")
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const [usuariosTemporales, setUsuariosTemporales] = useState<Usuario[]>([])
@@ -71,6 +78,14 @@ export function Login({ onLogin, onSkip }: LoginProps) {
       setError("La contraseña debe tener al menos 4 caracteres")
       return
     }
+    if (password !== confirmPassword) {
+      setError("Las contraseñas no coinciden")
+      return
+    }
+    if (!telefono.trim() || !region.trim() || !comuna.trim() || !direccion.trim() || !codigoPostal.trim()) {
+      setError("Completa teléfono, región, comuna, dirección y código postal para el despacho")
+      return
+    }
 
     // Verificar si el email ya existe
     const emailExiste = [...usuariosMock, ...usuariosTemporales].some(u => u.email === email)
@@ -85,7 +100,13 @@ export function Login({ onLogin, onSkip }: LoginProps) {
       email,
       nombre,
       password,
-      rol: "cliente" // Los nuevos registros son clientes
+      rol: "cliente", // Los nuevos registros son clientes
+      telefono,
+      region,
+      comuna,
+      direccion,
+      codigoPostal,
+      indicaciones
     }
 
     // Guardar en localStorage
@@ -98,6 +119,13 @@ export function Login({ onLogin, onSkip }: LoginProps) {
     setNombre("")
     setEmail("")
     setPassword("")
+    setConfirmPassword("")
+    setTelefono("")
+    setRegion("")
+    setComuna("")
+    setDireccion("")
+    setCodigoPostal("")
+    setIndicaciones("")
     
     // Cambiar a pestaña de login después de 1.5 segundos
     setTimeout(() => {
@@ -256,6 +284,80 @@ export function Login({ onLogin, onSkip }: LoginProps) {
                             required
                           />
                         </div>
+
+                        <div className="grid gap-4 sm:grid-cols-2">
+                          <div className="space-y-2">
+                            <Label htmlFor="telefono">Teléfono</Label>
+                            <Input
+                              id="telefono"
+                              type="tel"
+                              placeholder="+56 9 1234 5678"
+                              value={telefono}
+                              onChange={(e) => setTelefono(e.target.value)}
+                              required
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="region">Región</Label>
+                            <Input
+                              id="region"
+                              type="text"
+                              placeholder="Región Metropolitana"
+                              value={region}
+                              onChange={(e) => setRegion(e.target.value)}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid gap-4 sm:grid-cols-2">
+                          <div className="space-y-2">
+                            <Label htmlFor="comuna">Comuna</Label>
+                            <Input
+                              id="comuna"
+                              type="text"
+                              placeholder="Providencia"
+                              value={comuna}
+                              onChange={(e) => setComuna(e.target.value)}
+                              required
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="codigo-postal">Código Postal</Label>
+                            <Input
+                              id="codigo-postal"
+                              type="text"
+                              placeholder="7500000"
+                              value={codigoPostal}
+                              onChange={(e) => setCodigoPostal(e.target.value)}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="direccion">Dirección</Label>
+                          <Input
+                            id="direccion"
+                            type="text"
+                            placeholder="Calle, número, depto."
+                            value={direccion}
+                            onChange={(e) => setDireccion(e.target.value)}
+                            required
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="indicaciones">Indicaciones de entrega (opcional)</Label>
+                          <Input
+                            id="indicaciones"
+                            type="text"
+                            placeholder="Ej: Edificio azul, piso 8"
+                            value={indicaciones}
+                            onChange={(e) => setIndicaciones(e.target.value)}
+                          />
+                        </div>
+
                         <div className="space-y-2">
                           <Label htmlFor="password-registro">Contraseña</Label>
                           <Input
@@ -264,6 +366,17 @@ export function Login({ onLogin, onSkip }: LoginProps) {
                             placeholder="••••••"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            required
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="confirm-password-registro">Confirmar Contraseña</Label>
+                          <Input
+                            id="confirm-password-registro"
+                            type="password"
+                            placeholder="Repite tu contraseña"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             required
                           />
                           <p className="text-xs text-muted-foreground">Mínimo 4 caracteres</p>
@@ -289,8 +402,8 @@ export function Login({ onLogin, onSkip }: LoginProps) {
                       </form>
 
                       <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 text-xs text-blue-800">
-                        <p className="mb-1 font-medium">ℹ️ Registro Temporal</p>
-                        <p>Los registros se almacenan solo en esta sesión del navegador. Al recargar se perderán.</p>
+                        <p className="mb-1 font-medium">ℹ️ Registro para despacho</p>
+                        <p>Estos datos ayudan a completar el envío y la entrega de tus pedidos en el e-commerce.</p>
                       </div>
                     </TabsContent>
                   </div>
